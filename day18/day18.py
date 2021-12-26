@@ -112,9 +112,10 @@ def main():
         
 
         while True:
-            line_reduced, is_reduced = sn_reduce(line)
+            line_reduced, keep_reducing = sn_reduce(line)
             print(f'line_reduced: {line_reduced}')
-            if is_reduced:
+            line = line_reduced
+            if not keep_reducing:
                 break
 
     #eval string as list then calc magnitude
@@ -123,4 +124,5 @@ def main():
 
 if __name__ == '__main__':
 
-    main()
+    res = main()
+    print(res)
