@@ -43,37 +43,26 @@ def sn_explode(sn, index):
 
     i_new_int_l, new_int_l = find_nearest_reg_num(sn, index_start_reg_num, index_end_reg_num, numToAdd=left, direction='backward')
 
-    if i_new_int_r == -1:
-        right_sn = sn[index_end_reg_num:]
-    else:
-        right_sn = str(new_int_r) + sn[i_new_int_r+1:]
-    
-    if i_new_int_l == -1:
-        left_sn = sn[:index_start_reg_num]
-    else:
-        left_sn = sn[:i_new_int_l] + str(new_int_l)
-    
-    if index_end_reg_num - index_start_reg_num > 3:
-        conn_str = ''
-
-        sn_new = left_sn + '' + right_sn
+    sn_new = sn[:i_new_int_l] + str(new_int_l) + sn[i_new_int_l+1:index_start_reg_num] + '0' + sn[index_end_reg_num:i_new_int_r] + str(new_int_r) + sn[i_new_int_r+1:]
 
     return sn_new
-    
+
+def sn_split(sn, index):
+    print()
+
 
 def sn_reduce(sn):
-    expl, spl = find4(sn), find10(sn)
-    if expl == -1 and spl == -1:
-        return sn, False
+    while True:
+        expl, spl = find4(sn), find10(sn)
+        if expl == -1 and spl == -1:
+            return sn
+        if spl == -1 or expl < spl:
+            sn = sn_explode(sn, expl-1)
+        elif expl == -1 or spl < expl:
+            sn = sn_split(sn, spl)
+        else:
+            raise ValueError('WTF')
 
-    if spl == -1 or expl < spl:
-        sn = sn_explode(sn, expl-1)
-    elif expl == -1 or spl < expl:
-        sn = sn_split(sn, spl)
-    else:
-        raise ValueError('WTF')
-
-    return sn, True
 
 def find4(sn):
     par = 0
@@ -101,23 +90,15 @@ def magn(stuff):
 
 def main():
 
-    with open('./day18/test.txt') as input_file:
-        #snails = [eval(line) for line in input_file.readlines()]
+    with open('test.txt') as input_file:
         lines = [line.strip() for line in input_file.readlines()]
 
     result = lines[0]
 
     for i, line in enumerate(lines[1:]):
-        print(f'i: {i}')
         
         line = sn_add(result, line)
-        
-
-        while True:
-            line_reduced, is_reduced = sn_reduce(line)
-            print(f'line_reduced: {line_reduced}')
-            if is_reduced:
-                break
+        result = sn_reduce(line)
 
     #eval string as list then calc magnitude
     toCalc = eval(result)
