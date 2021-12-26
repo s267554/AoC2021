@@ -22,9 +22,9 @@ def find_nearest_reg_num(sn, index_start, index_end, numToAdd, direction):
 
 
     if direction == 'backward':
-        for i, c in enumerate(sn[:index_start]):
+        for i, c in enumerate(sn[:index_start][::-1]):
             if c not in skip_chars:
-                index_with_int = i
+                index_with_int = len(sn[:index_start]) - i
                 new_int = int(c) + numToAdd
                 break
     
@@ -38,8 +38,6 @@ def sn_explode(sn, index):
     index_end_reg_num = index+sn[index:].find(']')+1
 
     left, right = eval(sn[index_start_reg_num : index_end_reg_num])
-
-    i_new_int_r, new_int_r = find_nearest_reg_num(sn, index_start_reg_num, index_end_reg_num, numToAdd=right, direction='forward')
 
     i_new_int_l, new_int_l = find_nearest_reg_num(sn, index_start_reg_num, index_end_reg_num, numToAdd=left, direction='backward')
 
@@ -106,4 +104,5 @@ def main():
 
 if __name__ == '__main__':
 
-    main()
+    res = main()
+    print(res)
