@@ -39,26 +39,24 @@ def sn_explode(sn, index):
 
     left, right = eval(sn[index_start_reg_num : index_end_reg_num])
 
-    i_new_int_r, new_int_r = find_nearest_reg_num(sn, index_start_reg_num, index_end_reg_num, numToAdd=right, direction='forward')
-
     i_new_int_l, new_int_l = find_nearest_reg_num(sn, index_start_reg_num, index_end_reg_num, numToAdd=left, direction='backward')
+
+    if i_new_int_l == -1:
+        left_sn = sn[:index_start_reg_num]
+    else:
+        left_sn = sn[:i_new_int_l-1] + str(new_int_l)
+
+    i_new_int_r, new_int_r = find_nearest_reg_num(sn, index_start_reg_num, index_end_reg_num, numToAdd=right, direction='forward')
 
     if i_new_int_r == -1:
         right_sn = sn[index_end_reg_num:]
     else:
         right_sn = str(new_int_r) + sn[i_new_int_r+1:]
     
-    if i_new_int_l == -1:
-        left_sn = sn[:index_start_reg_num]
-    else:
-        left_sn = sn[:i_new_int_l] + str(new_int_l)
     
-    if index_end_reg_num - index_start_reg_num > 3:
-        conn_str = ''
+    new_sn = left_sn + ',0' + sn[index_end_reg_num:i_new_int_r] + str(new_int_r) + sn[i_new_int_r+1:]
 
-        sn_new = left_sn + '' + right_sn
-
-    return sn_new
+    return new_sn
     
 
 def sn_reduce(sn):
