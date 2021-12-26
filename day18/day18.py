@@ -22,9 +22,9 @@ def find_nearest_reg_num(sn, index_start, index_end, numToAdd, direction):
 
 
     if direction == 'backward':
-        for i, c in enumerate(sn[:index_start]):
+        for i, c in enumerate(sn[:index_start][::-1]):
             if c not in skip_chars:
-                index_with_int = i
+                index_with_int = len(sn[:index_start]) - i
                 new_int = int(c) + numToAdd
                 break
     
@@ -66,12 +66,14 @@ def sn_reduce(sn):
 
     if spl == -1 or expl < spl:
         sn = sn_explode(sn, expl-1)
+        return sn, True
     elif expl == -1 or spl < expl:
         sn = sn_split(sn, spl)
+        return sn, True
     else:
         raise ValueError('WTF')
 
-    return sn, True
+    
 
 def find4(sn):
     par = 0
