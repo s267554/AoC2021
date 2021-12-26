@@ -116,20 +116,30 @@ def magn(stuff):
 
 def main():
 
-    with open('test.txt') as input_file:
+    with open('input.txt') as input_file:
         lines = [line.strip() for line in input_file.readlines()]
 
-    result = lines[0]
+    # result = lines[0]
 
-    for i, line in enumerate(lines[1:]):
+    # for i, line in enumerate(lines[1:]):
         
-        line = sn_add(result, line)
-        result = sn_reduce(line)
+    #     line = sn_add(result, line)
+    #     result = sn_reduce(line)
 
-    #eval string as list then calc magnitude
-    print(result)
-    toCalc = eval(result)
-    return magn(toCalc)
+    # #eval string as list then calc magnitude
+    # print(result)
+    # toCalc = eval(result)
+    # return magn(toCalc)
+
+    best = -1
+
+    for i in range(len(lines)):
+        for j in range(len(lines)):
+            cur = magn(eval(sn_reduce(sn_add(lines[i], lines[j]))))
+            if cur > best:
+                best = cur
+    
+    return best
 
 if __name__ == '__main__':
 
