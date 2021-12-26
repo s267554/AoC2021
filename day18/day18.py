@@ -16,9 +16,10 @@ def find_nearest_reg_num(sn, index_start, index_end, numToAdd, direction):
 
     if direction == 'forward':
         for i, c in enumerate(sn[index_end:]):
-            if c not in skip_chars and num == '':
+            if c not in skip_chars:
+                if num == '':
+                    int_start = index_end + i
                 num += c
-                int_start = index_end + i
             elif c in skip_chars and num != '':
                 int_end = index_end + i
                 new_int = int(num) + numToAdd
@@ -29,9 +30,10 @@ def find_nearest_reg_num(sn, index_start, index_end, numToAdd, direction):
 
     if direction == 'backward':
         for i, c in enumerate(sn[:index_start][::-1]):
-            if c not in skip_chars and num == '':
+            if c not in skip_chars:
+                if num == '':
+                    int_end = len(sn[:index_start]) - i
                 num += c
-                int_end = len(sn[:index_start]) - i
             elif c in skip_chars and num != '':
                 int_start = len(sn[:index_start]) - i
                 new_int = int(num[::-1]) + numToAdd
