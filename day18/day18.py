@@ -94,6 +94,10 @@ def find10(sn):
         prev = ch
     return -1    
 
+def magn(stuff):
+    if isinstance(stuff, list):
+        return 3*magn(stuff[0]) + 2*magn(stuff[1])
+    return stuff
 
 def main():
 
@@ -115,7 +119,9 @@ def main():
             if is_reduced:
                 break
 
-    return
+    #eval string as list then calc magnitude
+    toCalc = eval(result)
+    return magn(toCalc)
 
 if __name__ == '__main__':
 
